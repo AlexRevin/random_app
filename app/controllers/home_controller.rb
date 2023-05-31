@@ -12,20 +12,31 @@ class HomeController < ApplicationController
   end
 
   def index_v2
-    # TODO
+    users = User.includes(:picture_items).all
+
+    resp = users.map do |user|
+      {
+        id: user.id,
+        pic: user.picture_items.ordered.map(&:url)
+      }
+    end
+    render json: resp
   end
 
   def update_user
     user = User.find(params[:id])
 
     if user.picture.nil? && (params[:first_pic] || params[:urls])
-      user.create_picture!(
+      picture = user.create_picture!(
         first_pic: params[:first_pic],
-        urls: params[:urls].join(",")
+        urls: params[:urls]&.join(",")
       )
+      picture.sync_picture_items!
+
     elsif user.picture
       user.picture.update!(first_pic: params[:first_pic]) if params[:first_pic]
       user.picture.update!(urls: params[:urls].join(",")) if params[:urls]
+      user.picture.sync_picture_items!
     end
 
     render json: {
