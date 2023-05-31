@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  ruby:
+    platform: linux/amd64
+    restart: unless-stopped
+    build: 
+      context: .
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - DOCKER_DEFAULT_PLATFORM=linux/amd64
