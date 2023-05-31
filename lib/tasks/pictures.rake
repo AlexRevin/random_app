@@ -1,5 +1,5 @@
 namespace :pictures do
-  desc "TODO"
+  desc "Sync all Pictures to PicutreItems"
   task sync: :environment do
     Picture.find_in_batches do |group|
       group.each(&:sync_picture_items!)

@@ -41,7 +41,7 @@ class HomeController < ApplicationController
 
     render json: {
       id: user.id,
-      pictures: user.picture ? [user.picture.first_pic, user.picture.urls&.split(",")].flatten : [],
+      pictures: user.picture ? [user.picture.first_pic, user.picture.urls&.split(",")].flatten : []
     }
   end
 end
